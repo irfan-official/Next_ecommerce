@@ -1,5 +1,5 @@
 "use client";
-
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BiSolidPhoneCall } from "react-icons/bi";
@@ -10,6 +10,8 @@ import { CgProfile } from "react-icons/cg";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import { MdInventory2 } from "react-icons/md";
+import { useSession, signOut } from "next-auth/react";
+import { SiAmazonluna } from "react-icons/si";
 
 // Props received from Server Component
 interface NavClientProps {
@@ -21,6 +23,7 @@ export default function NavClient({ user, logOut }: NavClientProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [hoverDiv, setHoverDiv] = useState(false);
   const [toggleList, setToggleList] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     Aos.init();
@@ -32,8 +35,12 @@ export default function NavClient({ user, logOut }: NavClientProps) {
 
   const navList = (
     <>
-      <Link href="/">Home</Link>
-      <Link href="/all-products">All Products</Link>
+      <Link href="/" className={activePage("/")}>
+        Home
+      </Link>
+      <Link href="/all-products" className={activePage("/all-products")}>
+        All Products
+      </Link>
       <Link
         href="#"
         onClick={() => {
@@ -46,10 +53,23 @@ export default function NavClient({ user, logOut }: NavClientProps) {
     </>
   );
 
-  function activeListPage(isActive: boolean) {
+  function activeListPage(path: string) {
     return `text-nowrap w-full hover:bg-white hover:text-slate-950 ${
-      isActive ? "border-l-2 border-l-lime-400" : ""
+      pathname.startsWith(path)
+        ? "border-l-3 border-l-lime-400 bg-lime-500/30 "
+        : ""
     } p-1 px-2 rounded text-slate-300 text-start flex items-center gap-2`;
+  }
+
+  function activePage(path: string) {
+    if (path === "/") {
+      return pathname === path
+        ? "border-b-2 border-b-lime-500 text-nowrap"
+        : "text-nowrap";
+    }
+    return pathname.startsWith(path)
+      ? "border-b-2 border-b-lime-500 text-nowrap"
+      : "text-nowrap";
   }
 
   return (
@@ -76,10 +96,10 @@ export default function NavClient({ user, logOut }: NavClientProps) {
 
         <Link
           href="/"
-          className="flex items-center justify-center gap-1 cursor-pointer"
+          className="flex items-center justify-center gap-2 cursor-pointer"
         >
-          <MdFoodBank size={isMobile ? 35 : 50} />
-          <h1 className="text-xl md:text-3xl font-bold">Food Lovers</h1>
+          <SiAmazonluna size={isMobile ? 35 : 45} />
+          <h1 className="text-xl md:text-3xl font-bold">Shopify</h1>
         </Link>
 
         <section className="md:flex gap-10 items-center hidden">
@@ -116,18 +136,21 @@ export default function NavClient({ user, logOut }: NavClientProps) {
 
               {toggleList && (
                 <ul className="absolute top-20 right-[25%] z-20 p-1 rounded flex flex-col gap-1 cursor-pointer bg-slate-800  shadow text-white ">
-                  <Link href="/profile" className={activeListPage(true)}>
+                  <Link href="/profile" className={activeListPage("/profile")}>
                     <CgProfile /> My Profile
                   </Link>
                   <hr className="border-white/20" />
                   <Link
                     href="/manage-products"
-                    className={activeListPage(true)}
+                    className={activeListPage("/manage-products")}
                   >
                     <MdInventory2 /> Manage Products
                   </Link>
                   <hr className="border-white/20" />
-                  <Link href="/add-products" className={activeListPage(false)}>
+                  <Link
+                    href="/add-products"
+                    className={activeListPage("/add-products")}
+                  >
                     <MdAdd /> Add Products
                   </Link>
                   <hr className="border-white/20" />
@@ -135,8 +158,8 @@ export default function NavClient({ user, logOut }: NavClientProps) {
                     className="w-full hover:bg-red-700 p-1 px-2 rounded flex items-center gap-2"
                     onClick={async () => {
                       if (logOut) {
-                        const result = await logOut();
-                        if (result.success) window.location.href = "/";
+                        const result = await signOut();
+                        window.location.href = "/";
                       }
                     }}
                   >

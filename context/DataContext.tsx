@@ -1,5 +1,7 @@
 "use client";
-
+import { Product } from "@/models/product.model";
+import { Feedback } from "@/models/feedback.model";
+import { TopReview } from "@/models/topReview.model";
 import {
   createContext,
   useContext,
@@ -9,7 +11,6 @@ import {
   useEffect,
 } from "react";
 import useAxios from "@/hooks/useAxios";
-
 export async function fetchWithRetry(apiCall: any, retries = 7, delay = 1000) {
   for (let i = 0; i < retries; i++) {
     try {
@@ -23,13 +24,12 @@ export async function fetchWithRetry(apiCall: any, retries = 7, delay = 1000) {
 }
 
 interface DataContextType {
-  limitedProductsData: any[];
-  allProductsData: any[];
-  categoryProductsData: any[];
-  usersFeedback: any[];
-  topReviewers: any[];
+  limitedProductsData: Product[];
+  allProductsData: Product[];
+  categoryProductsData: Record<string, Product[]>;
+  usersFeedback: Feedback[];
   addProductsStatus: boolean;
-  setAddProductsStatus: (value: boolean) => void;
+  setAddProductsStatus: React.Dispatch<React.SetStateAction<boolean>>;
   fetchProductLoader: Boolean;
   HomePageDataFetching: () => any;
   AllProductsDataFetchingWithLoader: () => any;
@@ -38,15 +38,29 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
-  const [limitedProductsData, setLimitedProductsData] = useState<any[]>([]);
-  const [allProductsData, setAllProductsData] = useState<any[]>([]);
-  const [categoryProductsData, setCategoryProductsData] = useState<any[]>([]);
-  const [usersFeedback, setUsersFeedback] = useState<any[]>([]);
-  const [topReviewers, setTopReviewers] = useState<any[]>([]);
-  const [addProductsStatus, setAddProductsStatus] = useState(false);
+  const [limitedProductsData, setLimitedProductsData] = useState<Product[]>([]);
+  const [allProductsData, setAllProductsData] = useState<Product[]>([]);
+  const [categoryProductsData, setCategoryProductsData] = useState<
+    Record<string, Product[]>
+  >({});
+  const [usersFeedback, setUsersFeedback] = useState<Feedback[]>([]);
+  const [addProductsStatus, setAddProductsStatus] = useState<boolean>(false);
   const [fetchProductLoader, setFetchProductLoader] = useState(false);
 
   const axiosInstance = useAxios();
+
+  function groupByCategory(products: Product[]) {
+    return products.reduce(
+      (acc: Record<string, Product[]>, product) => {
+        if (!acc[product.category]) {
+          acc[product.category] = [];
+        }
+        acc[product.category].push(product);
+        return acc;
+      },
+      {} as Record<string, Product[]>
+    );
+  }
 
   const HomePageDataFetching = useCallback(async () => {
     try {
@@ -55,22 +69,20 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       const limitedDataResponse = await fetchWithRetry(() =>
         axiosInstance.get("/api/limited-products-data")
       );
+      // console.log(
+      //   "/api/limited-products-data  1  => ",
+      //   limitedDataResponse.data.data
+      // );
       setLimitedProductsData(limitedDataResponse.data.data);
 
-      const topReviewersResponse = await fetchWithRetry(() =>
-        axiosInstance.get("/api/v1/home-others-data")
-      );
-      setTopReviewers(topReviewersResponse.data.data);
-
       const usersFeedBackResponse = await fetchWithRetry(() =>
-        axiosInstance.get("/api/v1/home-others-data")
+        axiosInstance.get("/api/users-feedback")
       );
+      // console.log(
+      //   "/api/users-feedback  3  => ",
+      //   usersFeedBackResponse.data.data
+      // );
       setUsersFeedback(usersFeedBackResponse.data.data);
-
-      const categoryResponse = await fetchWithRetry(() =>
-        axiosInstance.get("/api/v1/home-others-data")
-      );
-      setCategoryProductsData(categoryResponse.data.data);
     } catch (error) {
       alert("Backend waking up… please try again.");
     } finally {
@@ -88,6 +100,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       console.log("response from /api/all-products-data => ", res.data.data);
 
       setAllProductsData(res.data.data);
+      setCategoryProductsData(groupByCategory(res.data.data));
     } catch (error) {
       alert("Backend waking up… please try again.");
     } finally {
@@ -101,25 +114,26 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         axiosInstance.get("/api/all-products-data")
       );
 
-      console.log("response from /api/all-products-data => ", res.data.data);
+      // console.log("response from /api/all-products-data  4 => ", res.data.data);
 
       setAllProductsData(res.data.data);
+      setCategoryProductsData(groupByCategory(res.data.data));
     } catch (error) {
       alert("Backend waking up… please try again.");
     }
   }, [addProductsStatus]);
 
-  // useEffect(() => {
-  //   AllProductsDataFetchingWithNoLoader();
-  // }, [addProductsStatus]);
-
   useEffect(() => {
-    AllProductsDataFetchingWithLoader();
-  }, []);
+    AllProductsDataFetchingWithNoLoader();
+  }, [addProductsStatus]);
 
-  // useMemo(() => {
-  //   HomePageDataFetching();
+  // useEffect(() => {
+  //   AllProductsDataFetchingWithLoader();
   // }, []);
+
+  useMemo(() => {
+    HomePageDataFetching();
+  }, []);
 
   return (
     <DataContext.Provider
@@ -128,7 +142,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
         allProductsData, // /api/all-products-data GET
         categoryProductsData, //api/category-products-data GET
         usersFeedback, // api/users-feedback GET
-        topReviewers, //api/top-reviews GET
         addProductsStatus, // api/add-products POST
         setAddProductsStatus, // Flag variable
         fetchProductLoader, // loading state

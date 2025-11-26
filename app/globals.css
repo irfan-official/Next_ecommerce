@@ -25,3 +25,37 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.hero_text {
+  background-image: url("https://plus.unsplash.com/premium_photo-1701842913472-3e57eb04836d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTd8fGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D");
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.category_text {
+  background-image: url("https://images.unsplash.com/photo-1496715976403-7e36dc43f17b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D");
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.trending_text {
+  background-image: url("https://images.unsplash.com/photo-1496715976403-7e36dc43f17b?w=500&auto=format&fit=crop&q=60");
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  color: transparent;
+  line-height: 1.2; /* <— fixes cut off descender */
+}
+
+.getInTouch_text {
+  background-image: url("https://plus.unsplash.com/premium_photo-1701842913472-3e57eb04836d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTd8fGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D");
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  color: transparent;
+  line-height: 1.2; /* <— fixes cut off descender */
+}

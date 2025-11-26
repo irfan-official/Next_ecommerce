@@ -1,6 +1,8 @@
 import React from "react";
 import { MdOutlinePets } from "react-icons/md";
 import { MdFoodBank } from "react-icons/md";
+import { SiAmazonluna } from "react-icons/si";
+
 function Footer() {
   return (
     <div
@@ -11,18 +13,18 @@ function Footer() {
         <section className="__CS-Ticket_System__ col-span-2 sm:col-span-3 lg:col-span-2 order-1 w-full flex items-center flex-col gap-3 justify-center ">
           <section className="flex w-full justify-start items-center gap-4">
             <span className="w-10">
-              <MdFoodBank size={37} />
+              <SiAmazonluna size={37} />
             </span>
-            <h2 className="text-[27px] font-bold  w-full">Ecommerce</h2>
+            <h2 className="text-[27px] font-bold  w-full">Shopify</h2>
           </section>
           <p className="text-white/40 text-justify tracking-normal">
-            Food Lover is a smart, reliable platform for food enthusiasts,
-            offering tailored spaces to share culinary reviews. The app connects
-            users with local eateries, home chefs, and street vendors to explore
-            authentic flavors across every corner. With posting options, dining
-            insights, and community tips, Food Lover keeps every food experience
-            rich, social, and satisfying—bringing trusted, passionate food
-            stories directly to your fingertips.
+            Shopify is a reliable platform for online shoppers, offering
+            tailored spaces to browse modern products. The app connects users
+            with trusted sellers, brands, and local businesses to explore
+            quality items across every category. With posting options, buying
+            insights, and community tips, Shopify keeps every shopping
+            experience smooth, social, and satisfying—bringing trusted, exciting
+            products directly to your fingertips.
           </p>
         </section>
         <section className="__Company__ mt-6 lg:mt-0 w-full col-span-2 sm:col-span-1 lg:col-span-1 order-2 flex flex-col gap-2  justify-start items-center">

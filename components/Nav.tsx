@@ -5,11 +5,13 @@ import NavClient from "./NavClient";
 export default async function Nav() {
   const session = await getServerSession(authOptions);
 
+  console.log("session ==> ", session);
+
   const user = session?.user
     ? {
-        name: session.user.name ?? undefined,
-        email: session.user.email ?? undefined,
-        image: session.user.image ?? undefined,
+        name: session.user.name,
+        email: session.user.email,
+        image: session.user.image,
       }
     : null;
 

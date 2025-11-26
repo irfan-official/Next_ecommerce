@@ -4,7 +4,7 @@ import VerificationEmail from "@/emails/VerificationEmail";
 import { ApiResponse } from "@/types/ApiResponse";
 import type { SentMessageInfo } from "nodemailer";
 
-export const sendVerificationEmail = async ({
+const sendVerificationEmail = async ({
   receiverEmail,
   username,
   code,

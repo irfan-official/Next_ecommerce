@@ -10,12 +10,14 @@ import { CgProfile } from "react-icons/cg";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import { MdInventory2 } from "react-icons/md";
-import { useSession, signOut } from "next-auth/react";
+
 import { SiAmazonluna } from "react-icons/si";
+
+import { signOut, useSession } from "next-auth/react";
 
 // Props received from Server Component
 interface NavClientProps {
-  user: { name?: string; email?: string; image?: string } | null;
+  user: { name: string; email: string; image: string } | null;
   logOut?: () => Promise<{ success: boolean }>;
 }
 
@@ -112,7 +114,7 @@ export default function NavClient({ user, logOut }: NavClientProps) {
           <section className="bg-amber-50/20 flex items-center justify-center px-1 py-1 rounded-full">
             <BiSolidPhoneCall size={isMobile ? 25 : 35} />
           </section>
-          <section className="flex flex-col justify-center font-semibold text-[0.75rem] lg:text-[1rem]">
+          <section className="_call-us_ flex flex-col justify-center font-semibold text-[0.75rem] lg:text-[1rem]">
             <span>Call us:</span>
             <span>+880 1XX</span>
           </section>
@@ -156,12 +158,7 @@ export default function NavClient({ user, logOut }: NavClientProps) {
                   <hr className="border-white/20" />
                   <li
                     className="w-full hover:bg-red-700 p-1 px-2 rounded flex items-center gap-2"
-                    onClick={async () => {
-                      if (logOut) {
-                        const result = await signOut();
-                        window.location.href = "/";
-                      }
-                    }}
+                    onClick={() => signOut({ callbackUrl: "/" })}
                   >
                     <IoLogOutOutline /> Logout
                   </li>
@@ -177,7 +174,7 @@ export default function NavClient({ user, logOut }: NavClientProps) {
             </div>
           ) : (
             <Link
-              href="/login"
+              href="/auth/sign-in"
               className="px-5 py-3 bg-gray-400 text-white rounded-sm"
             >
               Login

@@ -2,10 +2,11 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface User extends Document {
   username: string;
+  imageUrl: string;
   email: string;
-  isEmailVerified: boolean;
+  isEmailVerified?: boolean;
   password: string;
-  verifyCode: string;
+  verifyCode?: string;
   verifyCodeExpiry: Date;
   createdAt?: Date;
   updatedAt?: Date;
@@ -18,6 +19,11 @@ const UserSchema: Schema<User> = new Schema(
     username: {
       type: String,
       required: [true, "Username is required"],
+      trim: true,
+    },
+    imageUrl: {
+      type: String,
+      required: [true, "imageUrl is required"],
       trim: true,
     },
     email: {
@@ -35,11 +41,11 @@ const UserSchema: Schema<User> = new Schema(
     },
     verifyCode: {
       type: String,
-      required: [true, "verify Code is required"],
+      trim: true,
     },
     verifyCodeExpiry: {
       type: Date,
-      required: [true, "verify Code Expiry is required"],
+      default: () => new Date(Date.now() + 10 * 60 * 60 * 1000),
     },
   },
   { timestamps: true }

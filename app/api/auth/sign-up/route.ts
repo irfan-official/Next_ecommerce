@@ -10,25 +10,24 @@ export async function POST(request: Request) {
   try {
     const { username, email, password, imageUrl } = await request.json();
 
+    console.log("/api/auth/sign-up ==> ", username, email, password, imageUrl);
+
+
     // Check duplicate user
     const existing = await UserModel.findOne({ email });
+
+
     if (existing) {
       return NextResponse.json(
-        { error: "Email already exists" },
+        { success: false, message: "User already exists" },
         { status: 400 }
       );
     }
 
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // Send email
-    await sendVerificationEmail({
-      receiverEmail: email,
-      username: username,
-      code: verifyCode,
-    });
 
     await UserModel.create({
       username,
@@ -39,12 +38,16 @@ export async function POST(request: Request) {
       provider: "credentials",
     });
 
+
     return NextResponse.json({
       success: true,
       message: "User registered. Verification code sent to email.",
     });
   } catch (error: any) {
     console.error(error);
-    return NextResponse.json({ error: "Signup failed" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Signup failed" },
+      { status: 500 }
+    );
   }
 }

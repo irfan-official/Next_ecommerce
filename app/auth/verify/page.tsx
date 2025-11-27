@@ -29,9 +29,9 @@ function page() {
     }
   }, [session?.user?.email]);
 
-  const [code, setCode] = useState<number | null>(null);
+  const [code, setCode] = useState<string>("");
 
-  const handleOnChange = (res: number) => {
+  const handleOnChange = (res: string) => {
     setCode(res);
   };
 
@@ -85,6 +85,15 @@ function page() {
 
     setSendMatchOTP(false);
   }
+
+  if (status === "loading") {
+    return (
+      <div className="w-full h-[90vh] flex items-center justify-center text-6xl font-bold">
+        <span className="loading loading-spinner loading-xl scale-200"></span>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full min-h-screen ">
       <div className="w-full h-[80vh] p-5 flex flex-col gap-5 items-center justify-center ">
@@ -106,7 +115,6 @@ function page() {
                 <AuthCode
                   length={6} // number of digits
                   onChange={handleOnChange}
-                  value={code}
                   allowedCharacters="numeric" // only numbers
                   containerClassName="flex justify-center gap-2 lg:gap-5 w-full h-10 lg:h-12"
                   inputClassName="h-full w-full border border-violet-600 rounded shadow text-center"

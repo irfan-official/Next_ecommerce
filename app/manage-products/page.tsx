@@ -9,8 +9,17 @@ import { MdReviews } from "react-icons/md";
 import { Product } from "@/models/product.model";
 import useAxios from "@/hooks/useAxios";
 import { AiOutlineProduct } from "react-icons/ai";
+import { useSession, signIn } from "next-auth/react";
 
 function page() {
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      signIn(); // redirects to login page automatically
+    }
+  }, [status]);
+
   const [searchProducts, setSearchProducts] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -44,6 +53,18 @@ function page() {
       setSearchLoading(false);
     }
   }, [searchProducts, allProductsData.length]);
+
+  if (status === "loading") {
+    return (
+      <div className="w-full h-[90vh] flex items-center justify-center text-6xl font-bold">
+        <span className="loading loading-spinner loading-xl scale-200"></span>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return null;
+  }
 
   if (fetchProductLoader) {
     return (

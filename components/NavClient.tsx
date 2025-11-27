@@ -10,7 +10,7 @@ import { CgProfile } from "react-icons/cg";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import { MdInventory2 } from "react-icons/md";
-
+import { useData } from "@/context/DataContext";
 import { SiAmazonluna } from "react-icons/si";
 
 import { signOut, useSession } from "next-auth/react";
@@ -26,6 +26,7 @@ export default function NavClient({ user, logOut }: NavClientProps) {
   const [hoverDiv, setHoverDiv] = useState(false);
   const [toggleList, setToggleList] = useState(false);
   const pathname = usePathname();
+
 
   useEffect(() => {
     Aos.init();
@@ -127,10 +128,10 @@ export default function NavClient({ user, logOut }: NavClientProps) {
                 onClick={() => setToggleList((prev) => !prev)}
                 onMouseEnter={() => setHoverDiv(true)}
                 onMouseLeave={() => setHoverDiv(false)}
-                className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-50 rounded-full border-2 overflow-hidden cursor-pointer"
+                className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-50 rounded-full border-3 border-slate-300 overflow-hidden cursor-pointer"
               >
                 <img
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
                   src={user.image}
                   alt="user image"
                 />
@@ -138,7 +139,10 @@ export default function NavClient({ user, logOut }: NavClientProps) {
 
               {toggleList && (
                 <ul className="absolute top-20 right-[25%] z-20 p-1 rounded flex flex-col gap-1 cursor-pointer bg-slate-800  shadow text-white ">
-                  <Link href="/profile" className={activeListPage("/profile")}>
+                  <Link
+                    href="/my-profile"
+                    className={activeListPage("/profile")}
+                  >
                     <CgProfile /> My Profile
                   </Link>
                   <hr className="border-white/20" />

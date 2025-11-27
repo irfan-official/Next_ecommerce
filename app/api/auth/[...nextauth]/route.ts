@@ -1,13 +1,42 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions, DefaultSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
 import bcrypt from "bcryptjs";
-import { config } from "dotenv";
-config();
+import { fetchWithRetry } from "@/context/DataContext";
 
-export const authOptions = {
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      provider?: string | null; // <-- your custom field
+    };
+  }
+
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    provider?: string | null; // <-- custom
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    provider?: string | null; // <-- custom
+  }
+}
+
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -25,50 +54,85 @@ export const authOptions = {
 
         const user = await UserModel.findOne({ email: credentials?.email });
         if (!user) throw new Error("User not found");
-        if (!user.isEmailVerified) throw new Error("Email not verified");
+        // if (!user.isEmailVerified) throw new Error("Email not verified");
 
         const isValid = await bcrypt.compare(
           credentials!.password,
           user.password
         );
+
         if (!isValid) throw new Error("Invalid password");
 
         return {
           id: user._id.toString(),
-          name: user.username, // map username -> name
+          name: user.username,
           email: user.email,
-          image: user.imageUrl, // map imageUrl -> image
-          role: "user",
+          image: user.imageUrl,
+          provider: "credentials",
         };
       },
     }),
   ],
+
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/google`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: user?.name,
+            email: user?.email,
+            image: user?.image,
+          }),
+        });
+
+        // if (!res.ok) return false;
+
+        const updatedUser = await res.json();
+
+        // Attach updated user to the "user" object
+        user.id = updatedUser.id;
+        user.name = updatedUser.name;
+        user.email = updatedUser.email;
+        user.image = updatedUser.image;
+        (user as any).provider = updatedUser.provider;
+      }
+
+      return true;
+    },
+
+    async jwt({ token, user, trigger, session }) {
+      // When profile is updated using session.update()
+      if (trigger === "update" && session) {
+        token.name = session.name || token.name;
+        token.email = session.email || token.email;
+        token.image = session.image || token.image;
+      }
+
+      // On login
       if (user) {
         token.id = user.id;
-        token.name = user.name; // always 'name'
+        token.name = user.name;
         token.email = user.email;
-        token.image = user.image; // always 'image'
-        token.role = user.role;
+        token.image = user.image;
       }
+
       return token;
     },
 
     async session({ session, token }) {
-      session.user.id = token.id;
+      session.user.id = token.id as string;
       session.user.name = token.name;
       session.user.email = token.email;
       session.user.image = token.image;
-      session.user.role = token.role;
+      session.user.provider = token.provider;
       return session;
     },
   },
 
   session: { strategy: "jwt" },
   pages: { signIn: "/auth/sign-in" },
-
-  // ⭐ REQUIRED
   secret: process.env.NEXTAUTH_SECRET,
 };
 

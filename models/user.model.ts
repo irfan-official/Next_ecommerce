@@ -6,6 +6,7 @@ export interface User extends Document {
   email: string;
   isEmailVerified?: boolean;
   password: string;
+  provider: string;
   verifyCode?: string;
   verifyCodeExpiry: Date;
   createdAt?: Date;
@@ -34,6 +35,11 @@ const UserSchema: Schema<User> = new Schema(
     password: {
       type: String,
       required: [true, "password is required"],
+    },
+    provider: {
+      type: String,
+      required: true,
+      enum: ["google", "credentials"],
     },
     isEmailVerified: {
       type: Boolean,

@@ -31,6 +31,7 @@ interface DataContextType {
   addProductsStatus: boolean;
   setAddProductsStatus: React.Dispatch<React.SetStateAction<boolean>>;
   fetchProductLoader: Boolean;
+
   HomePageDataFetching: () => any;
   AllProductsDataFetchingWithLoader: () => any;
 }
@@ -97,7 +98,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       const res = await fetchWithRetry(() =>
         axiosInstance.get("/api/all-products-data")
       );
-      console.log("response from /api/all-products-data => ", res.data.data);
+      // console.log("response from /api/all-products-data => ", res.data.data);
 
       setAllProductsData(res.data.data);
       setCategoryProductsData(groupByCategory(res.data.data));

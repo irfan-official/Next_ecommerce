@@ -7,6 +7,7 @@ import { MdLocationPin } from "react-icons/md";
 import useAxios from "@/hooks/useAxios";
 import { useData } from "@/context/DataContext";
 import { MdLibraryAdd } from "react-icons/md";
+import { useSession, signIn } from "next-auth/react";
 
 // import useAxiosSecure from "../hooks/useAxiosSecure";
 import swal from "sweetalert";
@@ -20,6 +21,13 @@ function page() {
     category: "",
     image: "",
   });
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      signIn(); // redirects to login page automatically
+    }
+  }, [status]);
 
   const [addReviewsLoader, setAddReviewsLoader] = useState(false);
 
@@ -80,6 +88,16 @@ function page() {
   function handleFormInput(e: any) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
+
+  if (status === "loading") {
+    return (
+      <div className="w-full h-[90vh] flex items-center justify-center text-6xl font-bold">
+        <span className="loading loading-spinner loading-xl scale-200"></span>
+      </div>
+    );
+  }
+
+  if (!session) return null; // user will be redirected
 
   return (
     <div className="w-full min-h-[65vh] lg:min-h-[90vh] text-black px-2 lg:px-6 sm:px-10 md:px-20 flex flex-col gap-7 sm:gap-10 items-center justify-start">

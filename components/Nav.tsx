@@ -5,7 +5,7 @@ import NavClient from "./NavClient";
 export default async function Nav() {
   const session = await getServerSession(authOptions);
 
-  console.log("session ==> ", session);
+  // console.log("session ==> ", session);
 
   const user = session?.user
     ? {

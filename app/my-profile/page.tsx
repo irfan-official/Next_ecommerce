@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import swal from "sweetalert";
 import { fetchWithRetry } from "@/context/DataContext";
 import { VscUnverified } from "react-icons/vsc";
+import { VscVerifiedFilled } from "react-icons/vsc";
 
 interface ProfileData {
   name: string;
@@ -106,6 +107,7 @@ export default function MyProfilePage() {
           name: result.name,
           email: result.email,
           image: result.image,
+          isEmailVerified: session?.user?.isEmailVerified,
         });
 
         setProfileData({
@@ -151,11 +153,19 @@ export default function MyProfilePage() {
             )}
           </div>
 
-          <div className="_verified_ w-full flex items-center justify-center gap-2 text-2xl mb-4">
-            <h2 className="c">Not verified</h2>
-            <span className="text-red-600">
-              <VscUnverified size={27} />
-            </span>
+          <div className="_verified_ w-full flex items-center justify-center gap-2 text-2xl mb-5">
+            <h2 className="c">
+              {session?.user?.isEmailVerified ? "verified" : "Not verified"}
+            </h2>
+            {session?.user?.isEmailVerified ? (
+              <span className="text-blue-500">
+                <VscVerifiedFilled size={27} />
+              </span>
+            ) : (
+              <span className="text-red-600">
+                <VscUnverified size={27} />
+              </span>
+            )}
           </div>
 
           <div className="w-full grid grid-cols-1 gap-5">
@@ -239,13 +249,14 @@ export default function MyProfilePage() {
           </div>
         </form>
 
-        {/* Forgot Password */}
-        <button
-          onClick={() => router.push("/reset-password")}
-          className="w-[22rem] md:w-[35rem] px-5 py-3 bg-blue-500 hover:bg-blue-800 cursor-pointer text-white rounded-md shadow-md mt-4"
-        >
-          Verify Email
-        </button>
+        {!session?.user?.isEmailVerified && (
+          <button
+            onClick={() => router.push("/reset-password")}
+            className="w-[22rem] md:w-[35rem] px-5 py-3 bg-blue-500 hover:bg-blue-800 cursor-pointer text-white rounded-md shadow-md mt-4"
+          >
+            Verify Email
+          </button>
+        )}
 
         {/* Logout */}
         <button

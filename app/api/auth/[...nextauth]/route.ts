@@ -13,7 +13,8 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       image?: string | null;
-      provider?: string | null; // <-- your custom field
+      provider?: string | null;
+      isEmailVerified?: boolean;
     };
   }
 
@@ -22,7 +23,8 @@ declare module "next-auth" {
     name?: string | null;
     email?: string | null;
     image?: string | null;
-    provider?: string | null; // <-- custom
+    provider?: string | null;
+    isEmailVerified?: boolean;
   }
 }
 
@@ -32,7 +34,8 @@ declare module "next-auth/jwt" {
     name?: string | null;
     email?: string | null;
     image?: string | null;
-    provider?: string | null; // <-- custom
+    provider?: string | null;
+    isEmailVerified?: boolean;
   }
 }
 
@@ -69,6 +72,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           image: user.imageUrl,
           provider: "credentials",
+          isEmailVerified: user.isEmailVerified,
         };
       },
     }),
@@ -97,6 +101,7 @@ export const authOptions: NextAuthOptions = {
         user.email = updatedUser.email;
         user.image = updatedUser.image;
         (user as any).provider = updatedUser.provider;
+        (user as any).isEmailVerified = updatedUser.isEmailVerified;
       }
 
       return true;
@@ -108,14 +113,16 @@ export const authOptions: NextAuthOptions = {
         token.name = session.name || token.name;
         token.email = session.email || token.email;
         token.image = session.image || token.image;
+        token.isEmailVerified =
+          session.isEmailVerified ?? token.isEmailVerified;
       }
 
-      // On login
       if (user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
         token.image = user.image;
+        token.isEmailVerified = (user as any).isEmailVerified ?? false;
       }
 
       return token;
@@ -127,6 +134,7 @@ export const authOptions: NextAuthOptions = {
       session.user.email = token.email;
       session.user.image = token.image;
       session.user.provider = token.provider;
+      session.user.isEmailVerified = token.isEmailVerified; // <-- must stay
       return session;
     },
   },

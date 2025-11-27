@@ -36,6 +36,7 @@ export async function POST(req: Request) {
       email: checkUser.email,
       image: checkUser.imageUrl,
       provider: "google",
+      isEmailVerified: checkUser.isEmailVerified,
     });
   } catch (error: any & {
     message: string;

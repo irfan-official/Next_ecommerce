@@ -17,16 +17,18 @@ import { signOut, useSession } from "next-auth/react";
 
 // Props received from Server Component
 interface NavClientProps {
-  user: { name: string; email: string; image: string } | null;
-  logOut?: () => Promise<{ success: boolean }>;
+  user: {
+    name: string | null | undefined;
+    email: string | null | undefined;
+    image: string | null | undefined;
+  } | null;
 }
 
-export default function NavClient({ user, logOut }: NavClientProps) {
+export default function NavClient({ user }: NavClientProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [hoverDiv, setHoverDiv] = useState(false);
   const [toggleList, setToggleList] = useState(false);
   const pathname = usePathname();
-
 
   useEffect(() => {
     Aos.init();
@@ -132,7 +134,10 @@ export default function NavClient({ user, logOut }: NavClientProps) {
               >
                 <img
                   className="w-full h-full object-cover object-center"
-                  src={user.image}
+                  src={
+                    user.image ??
+                    "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+                  }
                   alt="user image"
                 />
               </div>

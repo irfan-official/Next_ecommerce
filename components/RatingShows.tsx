@@ -10,15 +10,23 @@ import {
   Legend,
 } from "recharts";
 
-function RatingShows({ sortedRatings }): { sortedRatings: any } {
+// 1️⃣ define a type for props
+interface RatingShowsProps {
+  sortedRatings: {
+    name: string;
+    count: number;
+  }[];
+}
+
+// 2️⃣ apply the type to the component
+function RatingShows({ sortedRatings }: RatingShowsProps) {
   return (
     <ResponsiveContainer
-      className="outline-0  border-0"
+      className="outline-0 border-0"
       width="100%"
       height="100%"
     >
       <BarChart
-        className=""
         data={sortedRatings}
         layout="vertical"
         margin={{ top: 10, right: 0, left: 0, bottom: 35 }}

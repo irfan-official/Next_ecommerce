@@ -23,6 +23,11 @@ function page() {
   const [searchProducts, setSearchProducts] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [MyProducts, MyProductsProducts] = useState<Product[]>([]);
+
+  // useEffect(() => {
+  //   MyProductsProducts.filter(({user}) => )
+  // }, [])
 
   const axiosInstance = useAxios();
 

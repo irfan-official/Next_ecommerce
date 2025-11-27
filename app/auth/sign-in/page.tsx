@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -99,6 +100,12 @@ export default function SignInPage() {
           />
           <span>Sign in with Google</span>
         </button>
+        <Link
+          href={"/auth/sign-up"}
+          className="w-full flex items-center justify-center mt-5 text-center  underline text-blue-500"
+        >
+          Dont' have an account?, register
+        </Link>
       </div>
     </div>
   );

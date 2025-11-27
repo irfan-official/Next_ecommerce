@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import Hero_Text from "./Hero_Text.js";
+import Hero_Text from "./Hero_Text";
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 

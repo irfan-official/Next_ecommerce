@@ -8,10 +8,12 @@ const sendVerificationEmail = async ({
   receiverEmail,
   username,
   code,
+  subject = "Verification",
 }: {
   receiverEmail: string;
   username: string;
   code: string;
+  subject: string;
 }): Promise<ApiResponse> => {
   try {
     const transporter = nodemailer.createTransport({
@@ -24,12 +26,12 @@ const sendVerificationEmail = async ({
       },
     });
 
-    const html = render(VerificationEmail({ username, otp: code }));
+    const html = await render(VerificationEmail({ username, otp: code }));
 
     const mailOptions: Object = {
       from: process.env.SENDER_MAIL || "",
       to: receiverEmail,
-      subject: "Connected with Food Apps",
+      subject: subject,
       html,
     };
 

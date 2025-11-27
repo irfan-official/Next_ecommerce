@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -30,8 +33,18 @@ export default function SignUpPage() {
       if (!res.ok) {
         setError(data.error || "Signup failed");
       } else {
-        alert(data.message);
-        router.push("/auth/verify"); // redirect to verification page
+        const res = await signIn("credentials", {
+          email,
+          password,
+          redirect: true,
+          callbackUrl,
+        });
+
+        if (res?.error) {
+          alert("Invalid email or password!");
+          return;
+        }
+        router.push(callbackUrl);
       }
     } catch (err: any) {
       setError(err.message || "Something went wrong");

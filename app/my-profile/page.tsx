@@ -251,7 +251,7 @@ export default function MyProfilePage() {
 
         {!session?.user?.isEmailVerified && (
           <button
-            onClick={() => router.push("/reset-password")}
+            onClick={() => router.push("/auth/verify")}
             className="w-[22rem] md:w-[35rem] px-5 py-3 bg-blue-500 hover:bg-blue-800 cursor-pointer text-white rounded-md shadow-md mt-4"
           >
             Verify Email

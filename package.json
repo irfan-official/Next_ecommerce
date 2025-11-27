@@ -25,6 +25,7 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "react": "^19.2.0",
+    "react-auth-code-input": "^3.2.1",
     "react-dom": "^19.2.0",
     "react-email": "^5.0.5",
     "react-fast-marquee": "^1.6.5",

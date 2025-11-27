@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface Product extends Document {
-  id: number;
+  user: string;
   title: string;
   price: number;
   description: string;
@@ -22,9 +22,9 @@ const RatingSchema = new Schema(
 
 const ProductSchema: Schema<Product> = new Schema(
   {
-    id: {
-      type: Number,
-      required: [true, "Product id is required"],
+    user: {
+      type: String,
+      required: [true, "user is required"],
       unique: true,
     },
     title: {

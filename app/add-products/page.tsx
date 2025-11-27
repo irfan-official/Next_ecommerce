@@ -60,6 +60,7 @@ function page() {
           // name: user.name,
           // email: user.email,
           ...form,
+          userEmail: session?.user?.email,
         })
       );
 

@@ -101,7 +101,7 @@ function page() {
   if (!session) return null; // user will be redirected
 
   return (
-    <div className="w-full min-h-[65vh] lg:min-h-[90vh] text-black px-2 lg:px-6 sm:px-10 md:px-20 flex flex-col gap-7 sm:gap-10 items-center justify-start">
+    <div className="w-full min-h-[65vh] lg:min-h-[90vh] text-black px-2 lg:px-6 sm:px-10 md:px-20 flex flex-col gap-7 sm:gap-10 items-center justify-start mb-16">
       <section className="flex items-center justify-center gap-3 sm:gap-3 mt-12">
         <h1 className="text-center text-3xl sm:text-4xl font-bold text-[#392F5A] inline-block">
           Add Product

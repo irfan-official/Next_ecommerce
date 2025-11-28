@@ -11,6 +11,7 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { FaCommentDots } from "react-icons/fa";
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import { useSession, signOut } from "next-auth/react";
 
 import InsertComment from "./InsertComment";
 
@@ -27,6 +28,8 @@ function ClintComment({
 }) {
   const [clickReply, setClickReply] = useState<boolean>(false);
   const [openComments, setOpenComments] = useState(false);
+  const { data: session, status } = useSession();
+
   return (
     <div className="flex  justify-start gap-3 sm:gap-6 border-b pb-5 border-b-gray-300/70 w-full">
       <section className="__img__ __left__ w-[51px] lg:w-[53px] h-[52px] rounded-full overflow-hidden shadow border-2 border-slate-400 shrink-0">
@@ -87,7 +90,7 @@ function ClintComment({
             </span>
           </section>
         </section>
-        {clickReply && (
+        {clickReply && session?.user?.image && (
           <InsertComment
             clickReply={clickReply}
             setClickReply={setClickReply}

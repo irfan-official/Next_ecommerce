@@ -29,6 +29,12 @@ function page() {
   //   MyProductsProducts.filter(({user}) => )
   // }, [])
 
+  useEffect(() => {
+    if (session?.user?.email) {
+      alert(session?.user?.id);
+    }
+  }, [session?.user?.email]);
+
   const axiosInstance = useAxios();
 
   const { fetchProductLoader, allProductsData } = useData();

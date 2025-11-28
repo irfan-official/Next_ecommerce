@@ -134,10 +134,10 @@ export default function MyProfilePage() {
 
   return (
     <div className="w-full min-h-screen">
-      <div className="w-full min-h-[50vh] p-5 flex flex-col gap-5 items-center justify-center">
+      <div className="w-full min-h-[50vh] py-5  flex  flex-col gap-5 items-center justify-center">
         <form
           onSubmit={handleSubmit}
-          className="w-[22rem] md:w-[35rem] mt-10 md:mt-20 flex flex-col items-center gap-2 p-4 md:p-5 py-10 rounded shadow bg-white"
+          className="w-[25rem] md:w-[35rem] mt-10 md:mt-20 flex flex-col items-center gap-2 p-4 md:p-5 py-10 rounded shadow bg-white"
         >
           <div className="__image__ w-24 h-24 border-3 border-slate-300 rounded-full overflow-hidden mb-2">
             {profileData.image ? (

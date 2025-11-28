@@ -92,15 +92,16 @@ function Register() {
         const newRes = await signIn("credentials", {
           email: form.email,
           password: form.password,
-          redirect: true,
+          redirect: false,
           callbackUrl,
         });
 
         if (newRes?.error) {
-          alert("Invalid email or password!");
+          alert(newRes.error);
           return;
         }
-        // await swal({ icon: "success", title: res?.data?.message });
+
+        await swal({ icon: "success", title: res?.data?.message });
 
         router.push(callbackUrl);
       }
@@ -119,7 +120,12 @@ function Register() {
   };
 
   function handleFormInput(e: any) {
-    if (e.target.name === "password") {
+    if (e.target.name === "email") {
+      setForm((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value.toLowerCase(),
+      }));
+    } else if (e.target.name === "password") {
       const hasUppercase = /[A-Z]/;
       const hasLowercase = /[a-z]/;
       const isValidLength = /^.{6,}$/;
@@ -137,13 +143,15 @@ function Register() {
         hasLowercase: hasLowercase.test(e.target.value),
         isValidLength: isValidLength.test(e.target.value),
       }));
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    } else {
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   return (
     <div className="w-full min-h-screen p-5 flex flex-col md:flex-row items-center justify-center bg-slate-100 text-black gap-5 lg:gap-10 xl:gap-30">
-      <div className="relative flex flex-col justify-start md:w-1/2  max-w-md bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10 ">
+      <div className="relative flex flex-col justify-start md:w-1/2 w-full  max-w-md bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10 ">
         <div className="w-full">
           <div className="text-center">
             <h1 className="text-3xl font-semibold text-gray-900">SignUp</h1>
@@ -255,9 +263,9 @@ function Register() {
               </div>
 
               <div className="flex items-center justify-between">
-                <hr className="border border-slate-300 w-1/3" />
+                <hr className="border border-slate-300/50 w-1/3" />
                 <section className="c">OR</section>
-                <hr className="border border-slate-300 w-1/3" />
+                <hr className="border border-slate-300/50 w-1/3" />
               </div>
 
               <div className="__google-register__ my-6">

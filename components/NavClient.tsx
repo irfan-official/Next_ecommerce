@@ -12,7 +12,7 @@ import "aos/dist/aos.css";
 import { MdInventory2 } from "react-icons/md";
 import { useData } from "@/context/DataContext";
 import { SiAmazonluna } from "react-icons/si";
-
+import { CgMenuLeftAlt } from "react-icons/cg";
 import { signOut, useSession } from "next-auth/react";
 
 // Props received from Server Component
@@ -59,11 +59,11 @@ export default function NavClient({ user }: NavClientProps) {
   );
 
   function activeListPage(path: string) {
-    return `text-nowrap w-full hover:bg-white hover:text-slate-950 ${
+    return `text-nowrap w-full  bg-white/50 backdrop-filter-2xl ${
       pathname.startsWith(path)
-        ? "border-l-3 border-l-lime-400 bg-lime-500/30 "
-        : ""
-    } p-1 px-2 rounded text-slate-300 text-start flex items-center gap-2`;
+        ? "border-l-7 border-l-lime-400 text-lime-700"
+        : " text-slate-900 "
+    } p-1 px-2 rounded  text-start flex items-center gap-2 hover:bg-slate-950 hover:text-white`;
   }
 
   function activePage(path: string) {
@@ -85,15 +85,15 @@ export default function NavClient({ user }: NavClientProps) {
     >
       <section className="w-1/2 flex items-center justify-start gap-4 lg:gap-20">
         {isMobile && (
-          <div className="dropdown dropdown-right shadow relative">
+          <div className="dropdown dropdown-down  relative">
             <div
               tabIndex={0}
               role="button"
-              className="btn m-1 bg-white text-black"
+              className=" m-1 text-black w-10 border-0 text-xl outline-0"
             >
-              Click
+              <CgMenuLeftAlt size={28} />
             </div>
-            <ul className="dropdown-content flex flex-col gap-2 menu rounded-box absolute w-52 p-3 shadow-sm bg-white text-black px-4">
+            <ul className="dropdown-content flex flex-col gap-2 menu rounded-box absolute w-52 p-3 shadow-sm bg-stone-950 text-white px-4">
               {navList}
             </ul>
           </div>
@@ -113,16 +113,6 @@ export default function NavClient({ user }: NavClientProps) {
       </section>
 
       <section className="w-1/2 flex gap-5 items-center justify-end">
-        <section className="flex items-center gap-2">
-          <section className="bg-amber-50/20 flex items-center justify-center px-1 py-1 rounded-full">
-            <BiSolidPhoneCall size={isMobile ? 25 : 35} />
-          </section>
-          <section className="_call-us_ flex flex-col justify-center font-semibold text-[0.75rem] lg:text-[1rem]">
-            <span>Call us:</span>
-            <span>+880 1XX</span>
-          </section>
-        </section>
-
         <section>
           {user?.name ? (
             <div className="relative">
@@ -143,10 +133,10 @@ export default function NavClient({ user }: NavClientProps) {
               </div>
 
               {toggleList && (
-                <ul className="absolute top-20 right-[25%] z-20 p-1 rounded flex flex-col gap-1 cursor-pointer bg-slate-800  shadow text-white ">
+                <ul className="absolute top-12 lg:top-17 right-[12%] lg:right-[15%] z-20 p-1 rounded flex flex-col gap-1 cursor-pointer bg-slate-700/40 backdrop-blur-2xl   shadow text-white ">
                   <Link
                     href="/my-profile"
-                    className={activeListPage("/profile")}
+                    className={activeListPage("/my-profile")}
                   >
                     <CgProfile /> My Profile
                   </Link>
@@ -166,19 +156,12 @@ export default function NavClient({ user }: NavClientProps) {
                   </Link>
                   <hr className="border-white/20" />
                   <li
-                    className="w-full hover:bg-red-700 p-1 px-2 rounded flex items-center gap-2"
+                    className="w-full bg-violet-600 hover:bg-violet-800 p-1 px-2 rounded flex items-center gap-2"
                     onClick={() => signOut({ callbackUrl: "/" })}
                   >
                     <IoLogOutOutline /> Logout
                   </li>
                 </ul>
-              )}
-              {hoverDiv && !toggleList && (
-                <div className="absolute z-[999999] -bottom-15 -right-[20%] min-w-22 bg-white/30 backdrop-blur-2xl rounded-md">
-                  <section className="w-full h-full text-yellow-900 font-semibold flex items-center justify-center px-3 py-3">
-                    {user.email}
-                  </section>
-                </div>
               )}
             </div>
           ) : (

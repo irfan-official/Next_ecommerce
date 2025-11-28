@@ -1,33 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
+
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 
-export default function SignInPage() {
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+
+function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  let [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [credentialLoading, setCredentialLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
+  let [toggle, setToggle] = useState(false);
 
   const handleCredentialsLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setCredentialLoading(true);
     setErrorMsg("");
 
     const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: true,
+      ...form,
+      redirect: false,
       callbackUrl,
     });
 
-    setLoading(false);
+    console.log("/sign-in response ===> ", res);
+
+    setCredentialLoading(false);
 
     if (res?.error) {
       setErrorMsg("Invalid email or password!");
@@ -35,78 +47,161 @@ export default function SignInPage() {
     }
 
     alert("Login successfully");
-    console.log("res ===> ", res);
 
     router.push(callbackUrl);
   };
 
-  const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl });
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    await signIn("google", { callbackUrl });
+    setGoogleLoading(false);
   };
 
+  function handleFormInput(e: any) {
+    if (e.target.name === "email") {
+      setForm((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value.toLowerCase(),
+      }));
+    } else {
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+  }
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-80">
-        <h1 className="text-2xl font-semibold mb-4 text-center">Sign In</h1>
+    <div className="w-full min-h-screen p-5 flex flex-col md:flex-row items-center justify-center bg-slate-100 text-black gap-5 lg:gap-10 xl:gap-30">
+      <div className="relative flex flex-col justify-start w-full md:w-1/2  max-w-md bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10 ">
+        <div className="w-full">
+          <div className="text-center">
+            <h1 className="text-3xl font-semibold text-gray-900">SignIn</h1>
+            <p className="mt-2 text-gray-500">
+              SignIn below to access your account
+            </p>
+          </div>
+          <div className="mt-5">
+            <form onSubmit={handleCredentialsLogin}>
+              <div className="relative mt-6">
+                <input
+                  onChange={handleFormInput}
+                  type="email"
+                  name="email"
+                  id="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  autoComplete="new-email"
+                  value={form.email}
+                  required
+                  placeholder="Email Address"
+                  className="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
+                />
+                <label
+                  htmlFor="email"
+                  className="pointer-events-none absolute top-0 left-0 origin-left -translate-y-1/2 transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800"
+                >
+                  Email Address
+                </label>
+              </div>
 
-        {errorMsg && (
-          <p className="text-red-500 text-sm text-center mb-3">{errorMsg}</p>
-        )}
+              <div className="__password__ relative mt-6">
+                <input
+                  onChange={handleFormInput}
+                  type={toggle ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  required
+                  value={form.password}
+                  placeholder="Password"
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="none"
+                  className="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
+                />
+                <label
+                  htmlFor="password"
+                  className="pointer-events-none absolute top-0 left-0 origin-left -translate-y-1/2 transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800"
+                >
+                  Password
+                </label>
+                <span className="absolute top-0 right-0 h-full  ">
+                  <span
+                    onClick={() => {
+                      setToggle((prev) => !prev);
+                    }}
+                    className="h-full flex items-center cursor-pointer"
+                  >
+                    {toggle ? <FaRegEye /> : <FaRegEyeSlash />}
+                  </span>
+                </span>
+              </div>
 
-        {/* Credentials Login Form */}
-        <form onSubmit={handleCredentialsLogin}>
-          <label className="block mb-2 text-sm font-medium">Email</label>
-          <input
-            type="email"
-            className="w-full border px-3 py-2 rounded mb-3"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+              <div className="__button__ mb-4  flex flex-col justify-center items-center">
+                <span
+                  onClick={() => {
+                    router.push("/auth/reset-password");
+                  }}
+                  className="my-3 text-start font-semibold text-[0.9rem] py-3 cursor-pointer underline text-orange-400 hover:text-red-400 "
+                >
+                  Forgot Password?
+                </span>
+                <button
+                  type="submit"
+                  disabled={credentialLoading}
+                  className=" cursor-pointer shadow-lg w-full rounded-md bg-black px-3 py-4 text-white hover:text-orange-400 focus:bg-gray-600 focus:outline-none flex items-center justify-center"
+                >
+                  {credentialLoading ? (
+                    <span className="loading loading-spinner loading-lg bg-white text-white "></span>
+                  ) : (
+                    "Login"
+                  )}
+                </button>
+              </div>
 
-          <label className="block mb-2 text-sm font-medium">Password</label>
-          <input
-            type="password"
-            className="w-full border px-3 py-2 rounded mb-4"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+              <div className="flex items-center justify-between">
+                <hr className="border border-slate-300 w-1/3" />
+                <section className="c">OR</section>
+                <hr className="border border-slate-300 w-1/3" />
+              </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
-
-        <div className="flex items-center gap-2 my-4">
-          <div className="h-px bg-gray-300 flex-1"></div>
-          <span className="text-xs text-gray-500">OR</span>
-          <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="__google-login__ my-6 mt-4">
+                <button
+                  onClick={handleGoogleLogin}
+                  disabled={googleLoading}
+                  className=" cursor-pointer shadow-lg w-full rounded-md  px-3 py-3 text-black border border-slate-400 focus:bg-gray-600 focus:outline-none flex items-center justify-center hover:bg-slate-200"
+                >
+                  {googleLoading ? (
+                    <span className="loading loading-spinner loading-lg bg-black "></span>
+                  ) : (
+                    <section className="flex items-center justify-center gap-3">
+                      <section className="c">
+                        <FcGoogle size={24} />
+                      </section>
+                      <section className="c">Google Login</section>
+                    </section>
+                  )}
+                </button>
+              </div>
+              <p className="text-center text-sm text-gray-500">
+                Don't have an account yet?
+                <Link
+                  href="/auth/sign-up"
+                  className="underline font-semibold text-blue-500  hover:text-blue-700 focus:text-gray-800 focus:outline-none"
+                >
+                  {" "}
+                  SignUp
+                </Link>
+                .
+              </p>
+            </form>
+          </div>
         </div>
-
-        {/* Google Login */}
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-2 border py-2 rounded hover:bg-gray-100"
-        >
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="Google"
-            className="w-5 h-5"
-          />
-          <span>Sign in with Google</span>
-        </button>
-        <Link
-          href={"/auth/sign-up"}
-          className="w-full flex items-center justify-center mt-5 text-center  underline text-blue-500"
-        >
-          Dont' have an account?, register
-        </Link>
+        <section className="w-full flex items-center justify-center mt-4 font-semibold text-rose-500">
+          {errorMsg}
+        </section>
       </div>
     </div>
   );
 }
+
+export default Login;
+
+(" Already have an account?");

@@ -123,7 +123,7 @@ export default function NavClient({ user }: NavClientProps) {
                 className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-50 rounded-full border-3 border-slate-300 overflow-hidden cursor-pointer"
               >
                 <img
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-top"
                   src={
                     user.image ??
                     "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="

@@ -146,7 +146,7 @@ export default function MyProfilePage() {
                 alt={profileData.name}
                 width={96}
                 height={96}
-                className="object-cover object-center w-full h-full"
+                className="object-cover object-top w-full h-full"
               />
             ) : (
               <div className="bg-gray-300 w-full h-full" />

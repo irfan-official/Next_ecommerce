@@ -1,4 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛍️ Shopify – Full-Stack E-Commerce App (Next.js + TypeScript)
+
+Live Demo: **https://shopify.irfans.dev**
+
+Shopify is a full-stack e-commerce platform built with **Next.js**, **TypeScript**, and **MongoDB**.  
+Users can **create accounts, verify emails, log in via Google or credentials, post products, manage listings, and update their profile** — all in one secure, scalable system.
+
+The app uses **NextAuth** for authentication, **Mongoose** for database modeling, and **React Email + Nodemailer** for sending verification codes.
+
+---
+
+## 🚀 Features
+
+### 🔐 Authentication (NextAuth)
+
+- **Email + Password Login**
+- **Google OAuth Login**
+- **User Sign-Up with Email Verification (code sent via email)**
+- **Google accounts are auto-verified**
+- **Protected routes with token-based security (proxy layer + server validation)**
+
+### 🛍️ Product Management
+
+- Add new products
+- Edit & manage posted products
+- View user-specific products
+- Product includes: title, price, description, category, images, rating
+
+### ⭐ Additional Features
+
+- MongoDB database with Mongoose models
+- Secure password hashing using **bcrypt.js**
+- Email verification using **React Email + Nodemailer**
+- Fully typed codebase (TypeScript)
+- Responsive UI
+- Server + client rendered pages
+- Dashboard routes protected by NextAuth session tokens
+
+---
+
+## 📦 Tech Stack
+
+| Layer         | Technology                                        |
+| ------------- | ------------------------------------------------- |
+| Frontend      | Next.js 16 (TypeScript), React 19, TailwindCSS    |
+| Backend       | Next.js API Routes (TypeScript)                   |
+| Database      | MongoDB + Mongoose                                |
+| Auth          | NextAuth (Google Provider + Credentials Provider) |
+| Email Service | React Email + Nodemailer                          |
+| Others        | Axios, Zod, bcryptjs, AOS animations, React Icons |
+
+---
+
+## 🗂️ Environment Variables
+
+Follow the `.env.sample` file.  
+Required environment variables include:
 
 ## Getting Started
 
@@ -14,23 +70,70 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Setup & Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Follow the steps below to run the Shopify (Ecommerce App) project locally.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Clone the Repository
 
-## Learn More
+```bash
+git clone https://github.com/your-username/shopify.git
+cd shopify
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Install Dependencies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 3. Configure Environment Variables
 
-## Deploy on Vercel
+`Create a new .env file based on .env.sample:`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```env
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+
+MONGODB_URI=
+
+JWT_ACCESS_TOKEN_SECRET_KEY=
+JWT_REFRESH_TOKEN_SECRET_KEY=
+
+JWT_ACCESS_TOKEN_EXPIRE=
+JWT_REFRESH_TOKEN_EXPIRE=
+
+NEXT_PUBLIC_BASE_URL=
+
+EMAIL_HOST=
+EMAIL_PORT=
+EMAIL_USER=
+EMAIL_PASS=
+
+```
+
+## 4. Run the Development Server
+
+```bash
+npm run dev
+
+```
+
+- Your app will be available at: `http://localhost:3000`
+
+## 5. Build for Production (Optional)
+
+```bash
+
+npm run build
+npm start
+
+```

@@ -108,9 +108,7 @@ function page() {
         >
           <h2 className="_apps-label_ text-[#632EE3] font-semibold flex items-center gap-2 text-[0.9rem] sm:text-[1rem]">
             <span className="px-4 py-2 bg-white rounded-md shadow font-extrabold">
-              {searchProducts
-                ? filteredProducts.length
-                : allProductsData.length}
+              {searchProducts ? filteredProducts.length : MyProducts.length}
             </span>
             <span className=" underline"> Products Found</span>
           </h2>

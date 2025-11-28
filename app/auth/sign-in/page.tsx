@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import swal from "sweetalert";
 
 function Login() {
   const router = useRouter();
@@ -37,8 +38,6 @@ function Login() {
       callbackUrl,
     });
 
-    console.log("/sign-in response ===> ", res);
-
     setCredentialLoading(false);
 
     if (res?.error) {
@@ -46,9 +45,10 @@ function Login() {
       return;
     }
 
-    alert("Login successfully");
+    await swal({ icon: "success", title: "Login successfully" });
 
-    router.push(callbackUrl);
+    router.replace(callbackUrl);
+    router.refresh();
   };
 
   const handleGoogleLogin = async () => {
@@ -92,11 +92,11 @@ function Login() {
                   value={form.email}
                   required
                   placeholder="Email Address"
-                  className="peer mt-1 w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
+                  className="peer mt-1 bg-white text-black w-full border-b-2 border-gray-300 px-0 py-1 placeholder:text-transparent focus:border-gray-500 focus:outline-none"
                 />
                 <label
                   htmlFor="email"
-                  className="pointer-events-none absolute top-0 left-0 origin-left -translate-y-1/2 transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800"
+                  className="pointer-events-none absolute top-0 left-0 origin-left -translate-y-1/2 transform text-sm text-gray-800 opacity-75 transition-all duration-100 ease-in-out peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:top-0 peer-focus:pl-0 peer-focus:text-sm peer-focus:text-gray-800 "
                 >
                   Email Address
                 </label>

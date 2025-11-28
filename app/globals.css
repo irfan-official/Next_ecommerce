@@ -59,3 +59,12 @@ body {
   color: transparent;
   line-height: 1.2; /* <— fixes cut off descender */
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;
+  caret-color: #000 !important;
+}

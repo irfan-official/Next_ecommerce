@@ -103,7 +103,8 @@ function Register() {
 
         await swal({ icon: "success", title: res?.data?.message });
 
-        router.push(callbackUrl);
+        router.replace(callbackUrl);
+        router.refresh();
       }
     } catch (error: any | { message: string }) {
       console.log("error => ", error);

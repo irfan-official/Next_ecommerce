@@ -19,25 +19,28 @@ function page() {
       signIn(); // redirects to login page automatically
     }
   }, [status]);
-
+  const { fetchProductLoader, allProductsData } = useData();
   const [searchProducts, setSearchProducts] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [MyProducts, MyProductsProducts] = useState<Product[]>([]);
+  const [MyProducts, setMyProducts] = useState<Product[]>([]);
 
   // useEffect(() => {
   //   MyProductsProducts.filter(({user}) => )
   // }, [])
 
   useEffect(() => {
-    if (session?.user?.email) {
-      alert(session?.user?.id);
+    if (session?.user?.email && allProductsData.length >= 1) {
+      const products = allProductsData.filter(
+        (product) => String(product.user) === String(session?.user?.id)
+      );
+
+      console.log("products ====> ", products);
+      setMyProducts(products);
     }
-  }, [session?.user?.email]);
+  }, [session?.user?.email, allProductsData.length, fetchProductLoader]);
 
   const axiosInstance = useAxios();
-
-  const { fetchProductLoader, allProductsData } = useData();
 
   useEffect(() => {
     // if input empty → clear filtered data
@@ -53,7 +56,7 @@ function page() {
       const escaped = searchProducts.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const regex = new RegExp(escaped, "i"); // case-insensitive
 
-      const matched: Product[] | [] = allProductsData.filter(
+      const matched: Product[] | [] = MyProducts.filter(
         (item) => regex.test(item.category) || regex.test(item.title)
       );
 
@@ -65,7 +68,7 @@ function page() {
     }
   }, [searchProducts, allProductsData.length]);
 
-  if (status === "loading") {
+  if (status === "loading" || MyProducts.length < 1) {
     return (
       <div className="w-full h-[90vh] flex items-center justify-center text-6xl font-bold">
         <span className="loading loading-spinner loading-xl scale-200"></span>
@@ -173,7 +176,7 @@ function page() {
             </p>
           )
         ) : (
-          allProductsData.map(({ _id, title, image, price }, index) => (
+          MyProducts.map(({ _id, title, image, price }, index) => (
             <ManageProductCard
               key={String(_id)}
               _id={String(_id)}

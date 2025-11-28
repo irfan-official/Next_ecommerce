@@ -136,9 +136,7 @@ function Login() {
 
               <div className="__button__ mb-4  flex flex-col justify-center items-center">
                 <span
-                  onClick={() => {
-                    router.push("/auth/reset-password");
-                  }}
+                  onClick={() => {}}
                   className="my-3 text-start font-semibold text-[0.9rem] py-3 cursor-pointer underline text-orange-400 hover:text-red-400 "
                 >
                   Forgot Password?

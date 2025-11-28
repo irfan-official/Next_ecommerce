@@ -168,13 +168,15 @@ function page() {
             {""}
           </section>
 
-          <button
-            onClick={sendOTPEmail}
-            type="button"
-            className="__Back-button__ w-full text-center pt-0  underline text-blue-700 hover:text-blue-900 text-[0.7rem] md:text-[0.9rem] mt-4 cursor-pointer"
-          >
-            Didn't receive code? sent again?
-          </button>
+          {otpSent && (
+            <button
+              onClick={sendOTPEmail}
+              type="button"
+              className="__Back-button__ w-full text-center pt-0  underline text-blue-700 hover:text-blue-900 text-[0.7rem] md:text-[0.9rem] mt-4 cursor-pointer"
+            >
+              Didn't receive code? sent again?
+            </button>
+          )}
         </form>
       </div>
     </div>

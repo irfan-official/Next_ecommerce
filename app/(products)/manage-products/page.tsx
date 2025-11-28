@@ -10,6 +10,7 @@ import { Product } from "@/models/product.model";
 import useAxios from "@/hooks/useAxios";
 import { AiOutlineProduct } from "react-icons/ai";
 import { useSession, signIn } from "next-auth/react";
+import { MdProductionQuantityLimits } from "react-icons/md";
 
 function page() {
   const { data: session, status } = useSession();
@@ -68,7 +69,7 @@ function page() {
     }
   }, [searchProducts, allProductsData.length]);
 
-  if (status === "loading" || MyProducts.length < 1) {
+  if (status === "loading") {
     return (
       <div className="w-full h-[90vh] flex items-center justify-center text-6xl font-bold">
         <span className="loading loading-spinner loading-xl scale-200"></span>
@@ -145,8 +146,10 @@ function page() {
           </span>
         </section>
       </section>
-      <section
-        className="_Apps-Card_ 
+
+      {MyProducts.length >= 1 ? (
+        <section
+          className="_Apps-Card_ 
           w-full min-h-[40vh] 
           grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 
           gap-10  xl:gap-5 xl:gap-y-20 2xl:gap-10 md:gap-15 sm:gap-4 
@@ -154,14 +157,29 @@ function page() {
           
           place-items-center
 "
-      >
-        {searchProducts ? (
-          searchLoading ? (
-            <div className="col-span-full flex items-center justify-center">
-              <span className="loading loading-spinner loading-xl text-[#632EE3]"></span>
-            </div>
-          ) : filteredProducts.length > 0 ? (
-            filteredProducts.map(({ _id, title, image, price }, index) => (
+        >
+          {searchProducts ? (
+            searchLoading ? (
+              <div className="col-span-full flex items-center justify-center">
+                <span className="loading loading-spinner loading-xl text-[#632EE3]"></span>
+              </div>
+            ) : filteredProducts.length > 0 ? (
+              filteredProducts.map(({ _id, title, image, price }, index) => (
+                <ManageProductCard
+                  key={String(_id)}
+                  _id={String(_id)}
+                  title={title}
+                  image={image}
+                  price={price}
+                />
+              ))
+            ) : (
+              <p className="col-span-full text-center text-slate-500 font-semibold">
+                Sorry no reviews found!
+              </p>
+            )
+          ) : (
+            MyProducts.map(({ _id, title, image, price }, index) => (
               <ManageProductCard
                 key={String(_id)}
                 _id={String(_id)}
@@ -170,23 +188,16 @@ function page() {
                 price={price}
               />
             ))
-          ) : (
-            <p className="col-span-full text-center text-slate-500 font-semibold">
-              Sorry no reviews found!
-            </p>
-          )
-        ) : (
-          MyProducts.map(({ _id, title, image, price }, index) => (
-            <ManageProductCard
-              key={String(_id)}
-              _id={String(_id)}
-              title={title}
-              image={image}
-              price={price}
-            />
-          ))
-        )}
-      </section>
+          )}
+        </section>
+      ) : (
+        <div className="w-full  min-h-[40vh]  flex items-center justify-center text-xl md:text-4xl  lg:text-6xl gap-3 mb-10 lg:mb-0">
+          <span className="  text-red-600">
+            <MdProductionQuantityLimits />
+          </span>
+          <span className="text-red-600 text-center ">No Product found</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -22,7 +22,7 @@ interface RatingShowsProps {
 function RatingShows({ sortedRatings }: RatingShowsProps) {
   return (
     <ResponsiveContainer
-      className="outline-0 border-0"
+      className="outline-0 border-0 "
       width="100%"
       height="100%"
     >

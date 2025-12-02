@@ -25,7 +25,7 @@ function InsertComment({
   return (
     <section className="_insert_comments_ w-full h-[7.5rem] flex justify-start items-center gap-2 sm:gap-4 mb-0 ">
       <section className="__left_ _image_ h-full  w-[60px] md:w-[51px] overflow-hidden ">
-        <section className="border-3 border-slate-300 w-full h-[50px] rounded-full overflow-hidden object-cover bg-cover shadow-lg bg-amber-600 mt-3">
+        <section className="border-3 border-slate-300 w-full h-[50px] rounded-full overflow-hidden object-cover bg-cover  bg-amber-600 mt-3">
           <img
             src={`${session?.user?.image}`}
             alt=""
@@ -66,14 +66,14 @@ function InsertComment({
                   onClick={() => {
                     setClickReply(false);
                   }}
-                  className="px-3 py-2 sm:px-5 md:px-6 md:py-3 rounded-full bg-slate-200 font-semibold shadow-md cursor-pointer border border-slate-100 text-[0.7rem] sm:text-[0.9rem] "
+                  className="px-3 py-2 sm:px-5 md:px-6 md:py-3 rounded-full hover:bg-slate-200 font-semibold shadow cursor-pointer border-2 hover:text-slate-500 border-black text-[0.7rem] sm:text-[0.9rem] "
                 >
                   Cancel
                 </button>
                 <button
                   disabled={createCommentsLoader}
                   type="submit"
-                  className="px-3 py-2 sm:px-5 md:px-6 md:py-3 rounded-full bg-slate-950 text-white font-semibold shadow-md cursor-pointer border border-slate-400 flex items-center justify-center  text-[0.7rem] sm:text-[0.9rem] "
+                  className="px-3 py-2 sm:px-5 md:px-6 md:py-3 rounded-full bg-slate-950 text-white font-semibold shadow-md cursor-pointer border border-slate-400 flex items-center justify-center  text-[0.7rem] sm:text-[0.9rem] hover:text-blue-200"
                 >
                   {createCommentsLoader ? (
                     <span className="loading loading-spinner loading-md"></span>

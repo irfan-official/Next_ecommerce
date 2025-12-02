@@ -68,3 +68,13 @@ input:-webkit-autofill:focus {
   -webkit-text-fill-color: #000 !important;
   caret-color: #000 !important;
 }
+
+.swiper-pagination-bullet {
+  background: white !important; /** change default color */
+  opacity: 0.6;
+}
+
+.swiper-pagination-bullet-active {
+  background: white !important; /** active dot color */
+  opacity: 1;
+}

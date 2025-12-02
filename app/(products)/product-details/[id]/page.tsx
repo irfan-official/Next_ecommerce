@@ -74,7 +74,7 @@ function ServicesDetails() {
     <div className="w-full min-h-screen flex flex-col items-center gap-2 text-black px-6 sm:px-20 py-20">
       {/* Top Section */}
       <section className="_top_ w-full flex flex-col lg:flex-row lg:items-center lg:justify-between border-b border-b-gray-600/40 py-6 gap-10 lg:gap-8">
-        <span className="_left_ _image_ w-full xl:w-[45%] rounded-xl overflow-hidden shadow-lg inline-block">
+        <span className="_left_ _image_ w-full xl:w-[45%] rounded-xl overflow-hidden  inline-block">
           <img
             className="w-full h-[20rem] lg:h-[35rem] object-contain object-center"
             src={checkService?.image}
@@ -104,9 +104,9 @@ function ServicesDetails() {
       </section>
 
       {/* Ratings Section */}
-      <section className="_Ratings_ w-full">
-        <div className="w-full h-[400px] bg-gray-50 p-5 rounded-xl shadow">
-          <h2 className="text-2xl font-bold mb-4">Ratings</h2>
+      <section className="_Ratings_ w-full mt-10">
+        <div className="w-full h-[400px] bg-transparent p-5 rounded-xl ">
+          <h2 className="text-4xl font-bold mb-4">Ratings</h2>
           <RatingShows sortedRatings={sortedRatings} />
         </div>
       </section>

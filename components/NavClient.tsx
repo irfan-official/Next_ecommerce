@@ -29,6 +29,27 @@ export default function NavClient({ user }: NavClientProps) {
   const [hoverDiv, setHoverDiv] = useState(false);
   const [toggleList, setToggleList] = useState(false);
   const pathname = usePathname();
+  const [visible, setVisible] = useState(true);
+  const [lastScroll, setLastScroll] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      if (currentScroll > lastScroll) {
+        // scrolling down → hide navbar
+        setVisible(false);
+      } else {
+        // scrolling up → show navbar
+        setVisible(true);
+      }
+
+      setLastScroll(currentScroll);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScroll]);
 
   useEffect(() => {
     Aos.init();
@@ -80,8 +101,7 @@ export default function NavClient({ user }: NavClientProps) {
   return (
     <nav
       id="nav"
-      data-aos="fade-down"
-      className="relative z-[9999] flex w-full px-5 md:px-10 pb-2 py-0 shadow-md pt-2"
+      className={` z-[9999] flex w-full px-5 md:px-10 pb-2 py-0 shadow-md pt-2 sticky top-0 right-0 bg-white transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"} `}
     >
       <section className="w-1/2 flex items-center justify-start gap-4 lg:gap-20">
         {isMobile && (

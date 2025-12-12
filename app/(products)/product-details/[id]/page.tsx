@@ -7,7 +7,7 @@ import ClientComment from "@/components/ClintComment";
 import RatingShows from "@/components/RatingShows";
 import { useParams } from "next/navigation";
 import { useData } from "@/context/DataContext";
-
+import ShareReviews from "@/components/ShareReviews";
 import { Rating, ReviewComment, ProductReviews } from "@/lib/reviews&comments";
 import productReviews from "@/lib/reviews&comments";
 
@@ -22,6 +22,7 @@ function ServicesDetails() {
 
   const [order, setOrder] = useState(false);
   const [exceedID, setExceedID] = useState(false);
+  const [showReview, setShowReview] = useState(false);
   const [checkService, setCheckService] = useState<any>(null);
   const [sortedRatings, setSortedRatings] = useState<Rating[]>([]);
 
@@ -71,7 +72,12 @@ function ServicesDetails() {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center gap-2 text-black px-6 sm:px-20 py-20">
+    <div className="w-full relative min-h-screen flex flex-col items-center gap-2 text-black px-6 sm:px-20 py-20">
+      {showReview && (
+        <div className="w-full fixed top-0 left-0 z-[9999] min-h-screen bg-slate-200/50 flex items-center justify-center">
+          <ShareReviews setShowReview={setShowReview}/>
+        </div>
+      )}
       {/* Top Section */}
       <section className="_top_ w-full flex flex-col lg:flex-row lg:items-center lg:justify-between border-b border-b-gray-600/40 py-6 gap-10 lg:gap-8">
         <span className="_left_ _image_ w-full xl:w-[45%] rounded-xl overflow-hidden  inline-block">
@@ -96,7 +102,10 @@ function ServicesDetails() {
             {checkService?.description}
           </section>
           <section className="_button_ pl-5 mt-2">
-            <button className="px-5 py-3 rounded-sm bg-[#8E51FF] hover:bg-[#7328ff] font-semibold shadow-md text-[#ffffff]  hover:text-[#dbcaff] cursor-pointer ">
+            <button
+              onClick={() => setShowReview((prev) => !prev)}
+              className="px-5 py-3 rounded-sm bg-[#8E51FF] hover:bg-[#7328ff] font-semibold shadow-md text-[#ffffff]  hover:text-[#dbcaff] cursor-pointer "
+            >
               Order Now
             </button>
           </section>
@@ -123,7 +132,7 @@ function ServicesDetails() {
         <hr className="w-full border-b-2" />
 
         {/* Comments Loop */}
-        <section className="w-full flex flex-col items-start justify-start gap-4">
+        <section className="w-full flex flex-col items-start justify-start gap-4 ">
           {productReviews.reviewComments.map((item: ReviewComment) => (
             <ClientComment
               key={item.name}

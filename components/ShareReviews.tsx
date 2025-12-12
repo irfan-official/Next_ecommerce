@@ -4,7 +4,11 @@ import RatingStars from "@/components/RatingStars";
 import { useState } from "react";
 import { CgCloseO } from "react-icons/cg";
 
-export default function ShareReviews() {
+export default function ShareReviews({
+  setShowReview,
+}: {
+  setShowReview: any;
+}) {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
 
@@ -22,7 +26,10 @@ export default function ShareReviews() {
       onSubmit={handleReviewSubmit}
       className=" p-5 relative sm:w-96  border border-slate-200 rounded-xl shadow flex flex-col items-center justify-center gap-2 bg-violet-200 "
     >
-      <span className="absolute top-2 right-2 text-2xl sm:text-3xl text-white cursor-pointer hover:text-rose-900">
+      <span
+        onClick={() => setShowReview((prev: Boolean) => !prev)}
+        className="absolute top-2 right-2 text-2xl sm:text-3xl text-white cursor-pointer hover:text-rose-900"
+      >
         <CgCloseO />
       </span>
 

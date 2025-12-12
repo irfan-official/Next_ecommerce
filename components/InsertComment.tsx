@@ -8,9 +8,11 @@ import EmojiPicker from "emoji-picker-react";
 function InsertComment({
   clickReply,
   setClickReply,
+  setShowLine,
 }: {
   clickReply: boolean;
   setClickReply: any;
+  setShowLine: any;
 }) {
   const [comment, setComment] = useState<string>("");
   const [createCommentsLoader, setCreateCommentsLoader] =
@@ -23,9 +25,9 @@ function InsertComment({
     return;
   }
   return (
-    <section className="_insert_comments_ w-full h-[7.5rem] flex justify-start items-center gap-2 sm:gap-4 mb-0 ">
-      <section className="__left_ _image_ h-full  w-[60px] md:w-[51px] overflow-hidden ">
-        <section className="border-3 border-slate-300 w-full h-[50px] rounded-full overflow-hidden object-cover bg-cover  bg-amber-600 mt-3">
+    <section className="_insert_comments_ w-full h-[6rem] flex justify-start items-center gap-2 sm:gap-4 mb-0 mt-3">
+      <section className="__left_ _image_ h-full  w-[60px] md:w-[51px] overflow-hidden flex items-start ">
+        <section className="border-3 border-slate-300 w-full h-[50px] rounded-full overflow-hidden object-cover bg-cover  bg-amber-600">
           <img
             src={`${session?.user?.image}`}
             alt=""
@@ -49,7 +51,7 @@ function InsertComment({
           className="w-full  border-b placeholder:font-semibold placeholder:text-[0.9rem] md:placeholder:text-[1rem] outline-none pb-1 cursor-text"
         />
 
-        <section className="_comment-button_ w-full flex items-center justify-between mt-2 ">
+        <section className="_comment-button_ w-full flex items-center justify-between mt-2  ">
           <section className="_left_ _emoji_ text-2xl cursor-pointer shadow-lg rounded-full">
             {clickReply && (
               <span onClick={() => setShowPicker(!showPicker)}>
@@ -57,7 +59,7 @@ function InsertComment({
               </span>
             )}
           </section>
-          <section className="_right_ _handle_button_ flex gap-2 items-center justify-between">
+          <section className="_right_ _handle_button_ flex gap-2 items-center justify-between ">
             {clickReply ? (
               <>
                 <button
@@ -65,6 +67,7 @@ function InsertComment({
                   type="button"
                   onClick={() => {
                     setClickReply(false);
+                    setShowLine(false);
                   }}
                   className="px-3 py-2 sm:px-5 md:px-6 md:py-3 rounded-full hover:bg-slate-200 font-semibold shadow cursor-pointer border-2 hover:text-slate-500 border-black text-[0.7rem] sm:text-[0.9rem] "
                 >
@@ -88,7 +91,7 @@ function InsertComment({
           </section>
         </section>
         {showPicker && (
-          <div className="absolute mt-2 -left-20  top-20 shadow-xl z-10">
+          <div className="absolute -left-20  top-20 shadow-xl z-10">
             <EmojiPicker
               onEmojiClick={(emoji) => {
                 setComment((prev) => prev + emoji.emoji); // insert emoji

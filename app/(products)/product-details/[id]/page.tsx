@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 import { BsFillChatRightTextFill } from "react-icons/bs";
-import ClientComment from "@/components/ClintComment";
+import ClientComment from "@/components/ClintReviewCard";
 import RatingShows from "@/components/RatingShows";
 import { useParams } from "next/navigation";
 import { useData } from "@/context/DataContext";

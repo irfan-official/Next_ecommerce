@@ -3,6 +3,8 @@ import { MdCelebration } from "react-icons/md";
 import RatingStars from "@/components/RatingStars";
 import { useState } from "react";
 import { CgCloseO } from "react-icons/cg";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export default function ShareReviews({
   setShowReview,
@@ -18,7 +20,9 @@ export default function ShareReviews({
     if (rating === 0 || !review) {
       return;
     }
-    alert(`${rating} || ${review}`);
+    toast.success(`rating:${rating} review:${review}`);
+    setShowReview(false);
+    // Swal.fire("Deleted!", "Your product has been removed.", "success");
   }
 
   return (

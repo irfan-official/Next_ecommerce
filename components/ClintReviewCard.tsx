@@ -12,7 +12,7 @@ import { FaCommentDots } from "react-icons/fa";
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { useSession, signOut } from "next-auth/react";
-
+import { toast } from "react-toastify";
 import InsertComment from "./InsertComment";
 
 import ClientReply from "@/components/ClientReply";
@@ -38,6 +38,8 @@ function ClintComment({
 
   const { data: session, status } = useSession();
   const arrLength = productReviews2?.reviewComments.length;
+
+  if (status === "loading") return <p>Loading...</p>;
 
   return (
     <div className="flex  justify-start gap-3 sm:gap-4 border-b mb-5 border-b-gray-300/70 pb-3 w-full ">
@@ -87,6 +89,10 @@ function ClintComment({
 
           <section
             onClick={() => {
+              if (!session) {
+                return toast.error("Please Login to make a reply");
+              }
+
               setClickReply((prev) => !prev);
               setShowLine((prev) => !prev);
             }}

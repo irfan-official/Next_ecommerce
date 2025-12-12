@@ -153,7 +153,15 @@ export default function MyProfilePage() {
             )}
           </div>
 
-          <div className="_verified_ w-full flex items-center justify-center gap-2 text-2xl mb-5">
+          <div className="_verified_ relative w-full flex items-center justify-center gap-2 text-2xl mb-5">
+            <span className="absolute hidden right-0 md:flex items-center gap-2 text-[1rem]">
+              <h2 className="c">2-Step verification</h2>
+              <input
+                type="checkbox"
+                defaultChecked
+                className="toggle text-blue-500 border-blue-500 checked:text-white checked:border-blue-50 checked:bg-blue-500"
+              />
+            </span>
             <h2 className="c">
               {session?.user?.isEmailVerified ? "verified" : "Not verified"}
             </h2>
@@ -169,6 +177,15 @@ export default function MyProfilePage() {
           </div>
 
           <div className="w-full grid grid-cols-1 gap-5">
+            <span className="w-full md:hidden flex font-medium items-center justify-center gap-2 text-[1rem]">
+              <h2 className="c">2-Step verification</h2>
+              <input
+                type="checkbox"
+                defaultChecked
+                className="toggle text-blue-500 border-blue-500 checked:text-white checked:border-blue-50 checked:bg-blue-500"
+              />
+            </span>
+
             {/* Email */}
             <div className="flex items-center gap-3">
               <span className="w-[24%] md:w-[17%]">Email:</span>

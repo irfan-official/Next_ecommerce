@@ -1,5 +1,5 @@
 // app/layout.tsx
-
+import ToastProvider from "@/components/ToastContainer";
 import "./globals.css";
 import SessionProviderWrapper from "./providers/SessionProviderWrapper";
 import Nav from "@/components/Nav";
@@ -19,7 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Nav />
-        <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        <SessionProviderWrapper>
+          <ToastProvider />
+          {children}
+        </SessionProviderWrapper>
         <Footer />
       </body>
     </html>
